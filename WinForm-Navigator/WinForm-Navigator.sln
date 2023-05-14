@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForm-Navigator", "WinForm-Navigator\WinForm-Navigator.csproj", "{0E8EB3D6-3CC9-462C-9FF2-79795264369D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo", "demo\demo.csproj", "{891B2A88-8CD9-44D5-99EC-23C61BCA1564}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E8EB3D6-3CC9-462C-9FF2-79795264369D} = {0E8EB3D6-3CC9-462C-9FF2-79795264369D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E8EB3D6-3CC9-462C-9FF2-79795264369D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8EB3D6-3CC9-462C-9FF2-79795264369D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8EB3D6-3CC9-462C-9FF2-79795264369D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8EB3D6-3CC9-462C-9FF2-79795264369D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{891B2A88-8CD9-44D5-99EC-23C61BCA1564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{891B2A88-8CD9-44D5-99EC-23C61BCA1564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{891B2A88-8CD9-44D5-99EC-23C61BCA1564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{891B2A88-8CD9-44D5-99EC-23C61BCA1564}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {262F94D8-A6F5-4601-94E9-886B50F2902C}
+	EndGlobalSection
+EndGlobal
