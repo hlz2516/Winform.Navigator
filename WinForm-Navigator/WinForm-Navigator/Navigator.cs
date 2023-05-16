@@ -251,6 +251,10 @@ namespace Navigator
             {
                 return;
             }
+            if (container.Controls.Contains(this))
+            {
+                container.Controls.Remove(this);
+            }
 
             if (container.Controls.Count > 0)
             {
@@ -298,7 +302,7 @@ namespace Navigator
 
         private void AddPage(Control pageCtrl)
         {
-            Control oldPage = container!.Controls[0];
+            Control oldPage = container.Controls.Count > 0 ? container!.Controls[0] : null;
             container!.Controls.Clear();
             if (pageCtrl is Form)
             {
@@ -350,9 +354,13 @@ namespace Navigator
             }
         }
 
-        public virtual void BeforeDispose()
+        public void Destroy()
         {
-            container!.Controls.Clear();
+            if (!container.IsDisposed)
+            {
+                container.Controls.Clear();
+                this.Dispose();
+            }
         }
     }
 }

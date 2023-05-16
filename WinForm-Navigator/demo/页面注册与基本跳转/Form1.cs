@@ -17,7 +17,7 @@ namespace demo
         {
             //第二步，把继承了IPage的窗口类向导航器注册
             navigator1.RegisterPage<Page1>();
-            navigator1.RegisterPage<Page2>(true);  //设置为默认页面
+            navigator1.RegisterPage<Page2>();  //设置为默认页面
         }
 
         private void button1_Click(object sender, EventArgs e)
