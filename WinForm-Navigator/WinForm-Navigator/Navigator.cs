@@ -5,6 +5,8 @@ namespace Navigator
 {
     public partial class Navigator : Control
     {
+        public delegate void PageChangedEventHandler(Control oldPage, Control newPage);
+        public event PageChangedEventHandler PageChanged;
         public EventHandler<AuthorityMismatchedEventArgs>? AuthorityMismatched;
         /// <summary>
         /// 页面容器
@@ -25,7 +27,7 @@ namespace Navigator
         /// <summary>
         /// 当前程序的使用者角色/身份拥有的权限
         /// </summary>
-        public Authority Role { get; set; }
+        public static Authority Role { get; set; }
 
         public Navigator()
         {
@@ -79,7 +81,9 @@ namespace Navigator
                 pageList.Add(page);
                 if (defaultPage)
                 {
-                    SetDefaultPage(page);
+                    pageHistory.Clear();
+                    pageHistory.Push(page);
+                    container!.VisibleChanged += (sender, e) => { Flush(); };
                 }
                 return true;
             }
@@ -175,6 +179,40 @@ namespace Navigator
             }
         }
 
+        /// <summary>
+        /// 返回到上一个页面
+        /// </summary>
+        /// <returns>执行返回操作前的页面</returns>
+        public IPage Back()
+        {
+            if (pageHistory.Count > 1)
+            {
+                var oldPage = pageHistory.Pop();
+                oldPage.Pause();
+                popedPages.Push(oldPage);
+                Flush();
+                return oldPage;
+            }
+            return null;
+        }
+        /// <summary>
+        /// 撤销返回上一个页面
+        /// </summary>
+        public void GoBackBack()
+        {
+            if (popedPages.Count > 0)
+            {
+                var page = popedPages.Pop();
+                if (pageHistory.Count > 0)
+                {
+                    pageHistory.First().Pause();
+                }
+
+                pageHistory.Push(page);
+                Flush();
+            }
+        }
+
         private void SetPageParams(IPage page, Dictionary<string, object>? paramMap)
         {
             if (paramMap == null)
@@ -230,7 +268,7 @@ namespace Navigator
                         {
                             newPage.Reset();
                         }
-                        container.Controls.Clear();
+                        
                         AddPage(newPage as Control);
                     }
                 }
@@ -260,6 +298,8 @@ namespace Navigator
 
         private void AddPage(Control pageCtrl)
         {
+            Control oldPage = container!.Controls[0];
+            container!.Controls.Clear();
             if (pageCtrl is Form)
             {
                 Form form = (Form)pageCtrl;
@@ -271,6 +311,7 @@ namespace Navigator
             container.Controls.Add(pageCtrl);
             pageCtrl.Show();
             container.Update();
+            PageChanged?.Invoke(oldPage, pageCtrl);
         }
 
         /// <summary>
@@ -292,7 +333,7 @@ namespace Navigator
             NavigateTo(page,paramsMap);
         }
 
-        public void SetRole(Authority role)
+        public static void SetRole(Authority role)
         {
             Role = role;
         }
@@ -307,6 +348,11 @@ namespace Navigator
                     break;
                 }
             }
+        }
+
+        public virtual void BeforeDispose()
+        {
+            container!.Controls.Clear();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace demo
         {
             InitializeComponent();
             //第三步，设置使用者身份权限(这一步可提前为第一步或第二步，但一定要在调用NavigateTo前设置)
-            navigator1.SetRole(Navigator.Authority.VISITOR);
+            Navigator.Navigator.SetRole(Navigator.Authority.VISITOR);
         }
 
         private void Form1_Load(object sender, EventArgs e)
