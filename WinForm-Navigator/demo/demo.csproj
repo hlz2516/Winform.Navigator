@@ -49,43 +49,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="页面注册与基本跳转\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="页面注册与基本跳转\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Page1.cs">
+    <Compile Include="页面注册与基本跳转\Page1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Page1.Designer.cs">
+    <Compile Include="页面注册与基本跳转\Page1.Designer.cs">
       <DependentUpon>Page1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Page2.cs">
+    <Compile Include="页面注册与基本跳转\Page2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Page2.Designer.cs">
+    <Compile Include="页面注册与基本跳转\Page2.Designer.cs">
       <DependentUpon>Page2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Page3.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Page3.Designer.cs">
-      <DependentUpon>Page3.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="页面注册与基本跳转\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Page1.resx">
+    <EmbeddedResource Include="页面注册与基本跳转\Page1.resx">
       <DependentUpon>Page1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Page2.resx">
+    <EmbeddedResource Include="页面注册与基本跳转\Page2.resx">
       <DependentUpon>Page2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Page3.resx">
-      <DependentUpon>Page3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -109,5 +100,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

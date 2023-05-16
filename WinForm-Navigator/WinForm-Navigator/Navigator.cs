@@ -296,5 +296,17 @@ namespace Navigator
         {
             Role = role;
         }
+
+        public void SetAuthority<T>(Authority authority) where T : Control, new()
+        {
+            foreach (var page in pageList)
+            {
+                if (page is T)
+                {
+                    page.Authority = authority;
+                    break;
+                }
+            }
+        }
     }
 }

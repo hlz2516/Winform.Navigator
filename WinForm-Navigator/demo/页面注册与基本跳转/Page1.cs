@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Navigator;
+﻿using Navigator;
 using Navigator.Interfaces;
+using System.Windows.Forms;
 
 namespace demo
 {
+    //第一步，给每一个需要有导航功能的Form类继承IPage接口
     public partial class Page1 : Form,IPage
     {
         public bool Cached { get; set; }
-        public Authority Authority { get; set; } = Authority.VISITOR;
+        public Authority Authority { get; set; } = Authority.VISITOR; //给权限赋值一个初始值
 
         public string BankName
         {

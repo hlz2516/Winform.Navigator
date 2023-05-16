@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace demo
@@ -15,31 +9,27 @@ namespace demo
         public Form1()
         {
             InitializeComponent();
+            //第三步，设置使用者身份权限(这一步可提前为第一步或第二步，但一定要在调用NavigateTo前设置)
+            navigator1.SetRole(Navigator.Authority.VISITOR);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            navigator1.SetRole(Navigator.Authority.VISITOR);
+            //第二步，把继承了IPage的窗口类向导航器注册
             navigator1.RegisterPage<Page1>();
-            navigator1.RegisterPage<Page2>();
-            navigator1.RegisterPage<Page3>();
+            navigator1.RegisterPage<Page2>(true);  //设置为默认页面
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             var map = new Dictionary<string, object>();
-            map["BankName"] = "招商银行";
-            navigator1.NavigateTo<Page1>(map);
+            map["BankName"] = "带参跳转测试";
+            navigator1.NavigateTo<Page1>(map);  //带参跳转至Page1
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            navigator1.NavigateTo<Page2>();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            navigator1.NavigateTo<Page3>();
+            navigator1.NavigateTo<Page2>();  //不带参跳转至Page2
         }
     }
 }
