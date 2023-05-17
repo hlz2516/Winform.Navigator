@@ -2,6 +2,7 @@
 {
     public interface IPage
     {
+        string Path { get; set; }
         /// <summary>
         /// 是否缓存
         /// </summary>

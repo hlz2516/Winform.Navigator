@@ -67,6 +67,24 @@
     <Compile Include="界面自适应分辨率\页面容器设置大小自适应\Page41.Designer.cs">
       <DependentUpon>Page41.cs</DependentUpon>
     </Compile>
+    <Compile Include="页面切换事件\Form5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="页面切换事件\Form5.Designer.cs">
+      <DependentUpon>Form5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="页面切换事件\Page51.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="页面切换事件\Page51.Designer.cs">
+      <DependentUpon>Page51.cs</DependentUpon>
+    </Compile>
+    <Compile Include="页面切换事件\Page52.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="页面切换事件\Page52.Designer.cs">
+      <DependentUpon>Page52.cs</DependentUpon>
+    </Compile>
     <Compile Include="页面注册与基本跳转\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +137,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="界面自适应分辨率\页面容器设置大小自适应\Page41.resx">
       <DependentUpon>Page41.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="页面切换事件\Form5.resx">
+      <DependentUpon>Form5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="页面切换事件\Page51.resx">
+      <DependentUpon>Page51.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="页面切换事件\Page52.resx">
+      <DependentUpon>Page52.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="页面注册与基本跳转\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

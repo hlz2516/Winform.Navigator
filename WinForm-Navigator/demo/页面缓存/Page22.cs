@@ -6,6 +6,7 @@ namespace demo.页面缓存
 {
     public partial class Page22 : Form,IPage
     {
+        public string Path { get; set; }
         public bool Cached { get; set; } = true;  //设置缓存
         public Authority Authority { get; set; } = Authority.USER;
 

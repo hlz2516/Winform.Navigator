@@ -1,21 +1,18 @@
 ﻿using Navigator;
 using Navigator.Interfaces;
-using System;
 using System.Windows.Forms;
 
-namespace demo.页面缓存
+namespace demo.页面切换事件
 {
-    public partial class Page21 : Form,IPage
+    public partial class Page52 : Form,IPage
     {
         public string Path { get; set; }
         public bool Cached { get; set; }
         public Authority Authority { get; set; } = Authority.USER;
-
-        private int number = 0;
-
-        public Page21()
+        public Page52()
         {
             InitializeComponent();
+            Path = "/页面切换事件/page52";
         }
 
         public void Pause()
@@ -31,18 +28,6 @@ namespace demo.页面缓存
         public void Reset()
         {
 
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            number++;
-            lbl_number.Text = number.ToString();
-        }
-
-        private void Page21_Shown(object sender, EventArgs e)
-        {
-            timer1.Enabled = true;
-            timer1.Start();
         }
     }
 }

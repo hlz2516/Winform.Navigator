@@ -5,8 +5,9 @@ namespace Navigator
 {
     public partial class Navigator : Control
     {
-        public delegate void PageChangedEventHandler(Control oldPage, Control newPage);
+        public delegate bool PageChangedEventHandler(IPage oldPage, IPage newPage);
         public event PageChangedEventHandler PageChanged;
+        public event PageChangedEventHandler PageBeforeChanged;
         public event EventHandler DefaultPageFirstShown;
         public event EventHandler<AuthorityMismatchedEventArgs>? AuthorityMismatched;
         /// <summary>
@@ -126,6 +127,12 @@ namespace Navigator
                 {
                     if ((Role & page.Authority) > 0)
                     {
+                        bool? flag = PageBeforeChanged?.Invoke(pageHistory.ElementAtOrDefault(0), page);
+                        if (flag != null && flag == false)
+                        {
+                            return;
+                        }
+
                         if (pageHistory.Count > 0)
                         {
                             if (pageHistory.First() == page)
@@ -162,6 +169,12 @@ namespace Navigator
             {
                 if ((Role & page.Authority) > 0)
                 {
+                    bool? flag = PageBeforeChanged?.Invoke(pageHistory.ElementAtOrDefault(0), page);
+                    if (flag != null && flag == false)
+                    {
+                        return;
+                    }
+
                     if (pageHistory.Count > 0)
                     {
                         if (pageHistory.First() == page)
@@ -320,7 +333,7 @@ namespace Navigator
             container.Controls.Add(pageCtrl);
             pageCtrl.Show();
             container.Update();
-            PageChanged?.Invoke(oldPage, pageCtrl);
+            PageChanged?.Invoke((IPage)oldPage, (IPage)pageCtrl);
         }
 
         /// <summary>

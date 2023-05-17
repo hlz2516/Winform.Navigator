@@ -14,6 +14,7 @@ namespace demo
 {
     public partial class Page2 : Form,IPage
     {
+        public string Path { get; set; }
         public bool Cached { get; set; }
         public Authority Authority { get; set; } = Authority.VISITOR;
 
