@@ -1,4 +1,5 @@
-﻿using demo.页面缓存;
+﻿using demo.界面自适应分辨率.页面容器设置大小自适应;
+using demo.页面缓存;
 using System;
 using System.Windows.Forms;
 
@@ -14,7 +15,9 @@ namespace demo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form2());
+            //第一步，设置程序使用者角色
+            Navigator.Navigator.SetRole(Navigator.Authority.VISITOR | Navigator.Authority.USER);
+            Application.Run(new Form4());
         }
     }
 }

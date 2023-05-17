@@ -7,7 +7,8 @@ namespace Navigator
     {
         public delegate void PageChangedEventHandler(Control oldPage, Control newPage);
         public event PageChangedEventHandler PageChanged;
-        public EventHandler<AuthorityMismatchedEventArgs>? AuthorityMismatched;
+        public event EventHandler DefaultPageFirstShown;
+        public event EventHandler<AuthorityMismatchedEventArgs>? AuthorityMismatched;
         /// <summary>
         /// 页面容器
         /// </summary>
@@ -83,7 +84,11 @@ namespace Navigator
                 {
                     pageHistory.Clear();
                     pageHistory.Push(page);
-                    container!.VisibleChanged += (sender, e) => { Flush(); };
+                    container!.VisibleChanged += (sender, e) => 
+                    { 
+                        Flush();
+                        DefaultPageFirstShown?.Invoke(sender, e);
+                    };
                 }
                 return true;
             }
@@ -323,19 +328,19 @@ namespace Navigator
         /// </summary>
         /// <param name="page">页面实例</param>
         /// <param name="paramsMap">页面参数</param>
-        public void SetDefaultPage(IPage page,Dictionary<string,object>? paramsMap = null)
-        {
-            if (pageHistory.Count > 0)
-            {
-                pageHistory.Clear();
-            }
-            if (popedPages.Count > 0)
-            {
-                popedPages.Clear();
-            }
+        //public void SetDefaultPage(IPage page,Dictionary<string,object>? paramsMap = null)
+        //{
+        //    if (pageHistory.Count > 0)
+        //    {
+        //        pageHistory.Clear();
+        //    }
+        //    if (popedPages.Count > 0)
+        //    {
+        //        popedPages.Clear();
+        //    }
 
-            NavigateTo(page,paramsMap);
-        }
+        //    NavigateTo(page,paramsMap);
+        //}
 
         public static void SetRole(Authority role)
         {

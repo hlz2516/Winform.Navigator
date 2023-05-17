@@ -8,7 +8,6 @@ namespace demo.页面缓存
         public Form2()
         {
             InitializeComponent();
-            Navigator.Navigator.SetRole(Navigator.Authority.USER);
             navigator1.RegisterPage<Page21>(true);
             navigator1.RegisterPage<Page22>();
             navigator1.RegisterPage<Page23>();
