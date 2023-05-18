@@ -6,11 +6,12 @@
         public double yRate;
         public double wRate;
         public double hRate;
+        public double fontRate;
     }
 
     public class AutoSizeHelper
     {
-        private ScrollableControl _container;
+        private Control? _container;
 
         private Dictionary<string, ScaleRate> scaleMap;
 
@@ -23,22 +24,28 @@
             ContainerDesignSizes = new Dictionary<string, Size>();
         }
 
-        public void SetContainer(ScrollableControl container)
+        public void SetContainer(Control container)
         {
-            if (!(container is ContainerControl || container is Panel))
+            _container = container;
+            //Console.WriteLine($"container design size:{container.Size}");
+            _container.SizeChanged += (s, e) =>
             {
-                try
+                UpdateControlSize();
+            };
+
+            if (container is ListView)
+            {
+                ListView list = container as ListView;
+                foreach (ColumnHeader col in list.Columns)
                 {
-                    throw new Exception("传入的容器类型不正确，请传入继承自ContainerControl或Panel的类");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
+                    var scaleRate = new ScaleRate
+                    {
+                        wRate = col.Width * 1.0 / container.Width
+                    };
+                    scaleMap[col.Text] = scaleRate;
                 }
                 return;
             }
-
-            _container = container;
 
             Queue<Control> queue = new Queue<Control>();
             queue.Enqueue(_container);
@@ -55,7 +62,7 @@
                 //如果当前控件是容器，则加入到ContainerDesignSizes
                 if (curCtrl is ContainerControl || curCtrl is Panel)
                 {
-                    ContainerDesignSizes.Add(curCtrl.Name,curCtrl.Size);
+                    ContainerDesignSizes.Add(curCtrl.Name, curCtrl.Size);
                 }
 
                 //对于一开始传入的容器不处理
@@ -70,19 +77,27 @@
                     xRate = curCtrl.Location.X * 1.0 / curCtrl.Parent.Width,
                     yRate = curCtrl.Location.Y * 1.0 / curCtrl.Parent.Height,
                     wRate = curCtrl.Width * 1.0 / curCtrl.Parent.Width,
-                    hRate = curCtrl.Height * 1.0 / curCtrl.Parent.Height
+                    hRate = curCtrl.Height * 1.0 / curCtrl.Parent.Height,
+                    fontRate = curCtrl.Font.Size / _container.Height
                 };
                 scaleMap[curCtrl.Name] = scaleRate;
             }
-
-            _container.SizeChanged += (s, e) =>
-            {
-                UpdateControlSize();
-            };
         }
 
         public void UpdateControlSize()
         {
+            if (_container is ListView)
+            {
+                ListView list = _container as ListView;
+                foreach (ColumnHeader col in list.Columns)
+                {
+                    var scale = scaleMap[col.Text];
+                    col.Width = (int)Math.Round(list.Width * scale.wRate);
+                }
+                _container.Invalidate();
+                return;
+            }
+            //Console.WriteLine($"container changed size:{_container.Size}");
             Queue<Control> queue = new Queue<Control>();
             queue.Enqueue(_container);
 
@@ -108,10 +123,12 @@
                     int newY = (int)Math.Round(scaleRate.yRate * curCtrl.Parent.Height);
                     int newW = (int)Math.Round(scaleRate.wRate * curCtrl.Parent.Width);
                     int newH = (int)Math.Round(scaleRate.hRate * curCtrl.Parent.Height);
+                    float newFont = (float)Math.Round(scaleRate.fontRate * _container.Height, 2);
 
                     curCtrl.Width = newW;
                     curCtrl.Height = newH;
                     curCtrl.Location = new Point(newX, newY);
+                    curCtrl.Font = new Font(curCtrl.Font.FontFamily, newFont);
                     //Console.WriteLine("【UpdateControlSize】");
                     //Console.WriteLine($"{curCtrl.Name}   location:[{curCtrl.Location}]  size:[{curCtrl.Size}]");
                 }
@@ -134,7 +151,8 @@
                     xRate = ctrl.Location.X * 1.0 / parentDesignSize.Width,
                     yRate = ctrl.Location.Y * 1.0 / parentDesignSize.Height,
                     wRate = ctrl.Width * 1.0 / parentDesignSize.Width,
-                    hRate = ctrl.Height * 1.0 / parentDesignSize.Height
+                    hRate = ctrl.Height * 1.0 / parentDesignSize.Height,
+                    fontRate = ctrl.Font.Size / _container.Height
                 };
                 scaleMap[ctrl.Name] = scaleRate;
             }
