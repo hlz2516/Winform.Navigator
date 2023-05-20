@@ -1,4 +1,4 @@
-﻿using Navigator.Common;
+﻿using AutoSizeTools;
 using System;
 using System.Windows.Forms;
 
@@ -20,7 +20,7 @@ namespace demo.界面自适应分辨率.页面容器设置大小自适应
         {
             var page41 = navigator1.GetPage<Page41>();
             autoSizeHelper.AddNewControl(page41 as Control);
-            autoSizeHelper.UpdateControlSize();
+            autoSizeHelper.UpdateControls();
         }
     }
 }

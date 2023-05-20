@@ -1,4 +1,4 @@
-﻿using Navigator.Common;
+﻿using AutoSizeTools;
 using System;
 using System.Windows.Forms;
 
@@ -34,7 +34,7 @@ namespace demo
             label.Font = new System.Drawing.Font(label.Font.FontFamily, 16);
             this.Controls.Add(label);
             helper.AddNewControl(label);
-            helper.UpdateControlSize();
+            helper.UpdateControls();
         }
     }
 }

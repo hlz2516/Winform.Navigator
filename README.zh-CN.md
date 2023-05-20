@@ -12,8 +12,8 @@ Winform.Navigator支持以下功能：
 - 提供页面切换前与切换后事件(类似全局前置守卫和后置守卫)
 
 ### 解决的问题
-Winform.Navigator主要解决的是开发人员在编写代码实现页面/界面跳转时代码不合理、不规范的问题。比如：  
-假设你现在有三个页面page1,page2和page3，以及三个按钮btn1,btn2和btn3，点击btn1时跳转到page1，同理对于btn2和btn3。那么，怎么实现呢？  
+Winform.Navigator主要解决的是开发人员在编写代码实现页面/界面跳转功能时遇到的问题。比如：  
+假设你现在有三个页面类page1,page2和page3，以及三个按钮btn1,btn2和btn3，点击btn1时跳转到page1，同理对于btn2和btn3。那么，怎么实现呢？  
 一般我们会这么去实现：给btn1绑定一个点击事件，事件处理程序里，先清空页面父容器里的控件，再new一个page1，把这个page1添加到父容器里show一下，OK。  
 可如果page1里有我们想要暂存的信息怎么办？比如说，这个page1是一个编写文章的页面，使用者写到一半，切换到其他页面去了，当他再切回到page1时，是不是应该要还原之前写了一半的页面呢？  
 所以，针对这种情况，我们需要将被切换的页面进行暂存/缓存，怎么做呢？很简单，在主窗口类中，我们声明一个Page1的类变量，用来保存这个页面实例，当点击btn1跳转时，我们不用new新的page1，而是直接把这个保存住的page1实例添加到父容器就行了，但是这样，又会出现一个新问题：  
@@ -24,7 +24,12 @@ Winform.Navigator主要解决的是开发人员在编写代码实现页面/界�
 
 ## 基本使用
 
-1. 设置程序使用者身份/权限。
+1. 添加Navigator控件到容器中
+打开工具箱，找到Navigator，将其拖至页面容器中，如图所示：
+![拖到容器中](./1.jpg)
+红色方框部分就是Navigator控件
+
+2. 设置程序使用者身份/权限。
 ```
 static void Main()
 {
@@ -37,7 +42,7 @@ static void Main()
 ```
 SetRole方法不一定非要写在Main方法中，也可以写在主窗体构造时，只需要注意，一定要在默认页面显示前(如果有默认页面)或切换页面前调用，因为每次切换到新页面时都会做鉴权操作
 
-2. 给页面继承IPage接口
+3. 给页面继承IPage接口
 ```
 public partial class Page1 : Form,IPage
 {
@@ -62,7 +67,7 @@ public partial class Page1 : Form,IPage
 }
 ```
 
-3. 把继承了IPage的窗口类向导航器注册。这一步可在主窗体的构造函数或Load事件中完成
+4. 把继承了IPage的窗口类向导航器注册。这一步可在主窗体的构造函数或Load事件中完成
 ```
 private void Form1_Load(object sender, EventArgs e)
 {
@@ -72,7 +77,7 @@ private void Form1_Load(object sender, EventArgs e)
 }
 ```
 
-4. 给按钮编写跳转逻辑  
+5. 给按钮编写跳转逻辑  
 假设button1点击后跳转到page1，button2点击后跳转到page2
 ```
 private void button1_Click(object sender, EventArgs e)

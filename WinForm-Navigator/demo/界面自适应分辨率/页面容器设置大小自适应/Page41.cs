@@ -1,5 +1,5 @@
-﻿using Navigator;
-using Navigator.Common;
+﻿using AutoSizeTools;
+using Navigator;
 using Navigator.Interfaces;
 using System.Windows.Forms;
 
