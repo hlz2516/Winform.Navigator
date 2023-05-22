@@ -36,5 +36,19 @@ namespace demo.界面自适应分辨率.页面容器设置大小自适应
 
         }
 
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            System.Console.WriteLine($"button2 loc:{button2.Location}");
+        }
+
+        private void label1_Click(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void Page41_SizeChanged(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }

@@ -86,7 +86,7 @@ namespace Navigator
                     pageHistory.Clear();
                     pageHistory.Push(page);
                     container!.VisibleChanged += (sender, e) => 
-                    { 
+                    {
                         Flush();
                         DefaultPageFirstShown?.Invoke(sender, e);
                     };

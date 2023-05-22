@@ -20,7 +20,7 @@ namespace demo
             Application.SetCompatibleTextRenderingDefault(false);
             //第一步，设置程序使用者角色
             Navigator.Navigator.SetRole(Navigator.Authority.VISITOR | Navigator.Authority.USER);
-            Application.Run(new Form3());
+            Application.Run(new Form4());
         }
     }
 }

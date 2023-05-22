@@ -18,9 +18,20 @@ namespace demo.界面自适应分辨率.页面容器设置大小自适应
 
         private void navigator1_DefaultPageFirstShow(object sender, EventArgs e)
         {
-            var page41 = navigator1.GetPage<Page41>();
-            autoSizeHelper.AddNewControl(page41 as Control);
-            autoSizeHelper.UpdateControls();
+            //var page41 = navigator1.GetPage<Page41>();
+            //autoSizeHelper.AddNewControl(page41 as Control);
+            //autoSizeHelper.UpdateControls();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Page41 page = new Page41();
+            page.ControlBox = false;
+            page.FormBorderStyle = FormBorderStyle.None;
+            page.TopLevel = false;
+            page.Dock = DockStyle.Fill;
+            panel1.Controls.Add(page);
+            page.Show();
         }
     }
 }

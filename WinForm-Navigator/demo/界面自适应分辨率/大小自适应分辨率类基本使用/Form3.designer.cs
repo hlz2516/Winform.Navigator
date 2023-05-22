@@ -280,6 +280,7 @@
             this.Load += new System.EventHandler(this.Form3_Load);
             this.SizeChanged += new System.EventHandler(this.Form3_SizeChanged);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -28,12 +28,15 @@ namespace demo
         private void button1_Click(object sender, EventArgs e)
         {
             //动态添加控件并设置分辨率自适应
-            Label label = new Label();
-            label.Text = "测试文字";
-            label.Location = new System.Drawing.Point(579, 260);
-            label.Font = new System.Drawing.Font(label.Font.FontFamily, 16);
-            this.Controls.Add(label);
-            helper.AddNewControl(label);
+            Label labe1 = new Label();
+            labe1.AutoSize = true;
+            labe1.Location = new System.Drawing.Point(77, 75);
+            labe1.Name = "label1";
+            labe1.Size = new System.Drawing.Size(41, 12);
+            labe1.TabIndex = 6;
+            labe1.Text = "label1";
+            this.panel1.Controls.Add(labe1);
+            helper.AddNewControl(labe1);
             helper.UpdateControls();
         }
     }
