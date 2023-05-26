@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0-windows;net472</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
-    <RootNamespace>Navigator</RootNamespace>
+    <RootNamespace>Navigators</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>

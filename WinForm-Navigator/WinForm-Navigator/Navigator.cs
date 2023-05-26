@@ -31,7 +31,7 @@ namespace Navigators
         /// </summary>
         public static Authority Role { get; set; }
 
-        public static bool EnableAuthority { get; set; } = true;
+        public static bool EnableAuthority { get; set; } = false;
 
         public Navigator()
         {

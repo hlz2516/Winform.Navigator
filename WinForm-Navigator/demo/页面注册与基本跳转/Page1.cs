@@ -1,13 +1,15 @@
 ﻿using Navigators;
+using Navigators.Attributes;
 using Navigators.Interfaces;
 using System.Windows.Forms;
 
 namespace demo
 {
     //第一步，给每一个需要有导航功能的Form类继承IPage接口
+    [Route("/flowchart/chart1")]
     public partial class Page1 : Form,IPage
     {
-        public string Path { get; set; }
+        public string Path { get; set; } = "/flowchart/chart1";
         public bool Cached { get; set; }
         public Authority Authority { get; set; } = Authority.VISITOR; //给权限赋值一个初始值
 

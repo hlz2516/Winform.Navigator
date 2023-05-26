@@ -18,11 +18,12 @@ namespace demo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //第一步，设置程序使用者角色
-            Navigator.SetRole(Authority.VISITOR | Authority.USER);
-            //如果不想使用该包的鉴权机制，可以设置取消鉴权，设置后页面跳转时不再鉴权
-            //Navigator.EnableAuthority = false;
-            Application.Run(new Form6());
+            //第一步，如果想使用该包的鉴权机制，开启鉴权机制，设置程序使用者角色
+            //Navigator.EnableAuthority = true;  //该属性默认false
+            //Navigator.SetRole(Authority.VISITOR | Authority.USER);
+
+            Router.LoadConfig();
+            Application.Run(new Form1());
         }
     }
 }
