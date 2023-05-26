@@ -1,4 +1,4 @@
-﻿namespace Navigator
+﻿namespace Navigators
 {
     [Flags]
     public enum Authority

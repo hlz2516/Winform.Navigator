@@ -30,7 +30,7 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
-            this.navigator1 = new Navigator.Navigator();
+            this.navigator1 = new Navigators.Navigator();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,7 +80,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private Navigator.Navigator navigator1;
+        private Navigators.Navigator navigator1;
         private System.Windows.Forms.Button button1;
     }
 }

@@ -1,7 +1,7 @@
-﻿using Navigator.Interfaces;
+﻿using Navigators.Interfaces;
 using System.Reflection;
 
-namespace Navigator
+namespace Navigators
 {
     public partial class Navigator : Control
     {
@@ -31,6 +31,8 @@ namespace Navigator
         /// </summary>
         public static Authority Role { get; set; }
 
+        public static bool EnableAuthority { get; set; } = true;
+
         public Navigator()
         {
             InitializeComponent();
@@ -52,9 +54,9 @@ namespace Navigator
         {
             base.OnPaint(e);
             var gh = e.Graphics;
-            gh.DrawImage(Properties.Resources.地图导航_35,2,2,Width-4,Height-4);
+            gh.DrawImage(Properties.Resources.地图导航_35, 2, 2, Width - 4, Height - 4);
             Pen pen = new Pen(Color.Black, 2);
-            gh.DrawEllipse(pen,2, 2, Width-4, Height-4);
+            gh.DrawEllipse(pen, 2, 2, Width - 4, Height - 4);
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace Navigator
                 {
                     pageHistory.Clear();
                     pageHistory.Push(page);
-                    container!.VisibleChanged += (sender, e) => 
+                    container!.VisibleChanged += (sender, e) =>
                     {
                         Flush();
                         DefaultPageFirstShown?.Invoke(sender, e);
@@ -125,33 +127,32 @@ namespace Navigator
             {
                 if (page is T)
                 {
-                    if ((Role & page.Authority) > 0)
-                    {
-                        bool? flag = PageBeforeChanged?.Invoke(pageHistory.ElementAtOrDefault(0), page);
-                        if (flag != null && flag == false)
-                        {
-                            return;
-                        }
-
-                        if (pageHistory.Count > 0)
-                        {
-                            if (pageHistory.First() == page)
-                            {
-                                break;
-                            }
-                            pageHistory.First().Pause();
-                        }
-                        SetPageParams(page,paramMap);
-                        pageHistory.Push(page);
-                        Flush();
-                    }
-                    else
+                    if (EnableAuthority && (Role & page.Authority) == 0)
                     {
                         var eveArgs = new AuthorityMismatchedEventArgs();
                         eveArgs.MyAuthority = Role;
                         eveArgs.PageRequired = page.Authority;
-                        AuthorityMismatched?.Invoke(null,eveArgs);
+                        AuthorityMismatched?.Invoke(null, eveArgs);
+                        return;
                     }
+
+                    bool? flag = PageBeforeChanged?.Invoke(pageHistory.ElementAtOrDefault(0), page);
+                    if (flag != null && flag == false)
+                    {
+                        return;
+                    }
+
+                    if (pageHistory.Count > 0)
+                    {
+                        if (pageHistory.First() == page)
+                        {
+                            break;
+                        }
+                        pageHistory.First().Pause();
+                    }
+                    SetPageParams(page, paramMap);
+                    pageHistory.Push(page);
+                    Flush();
 
                     break;
                 }
@@ -167,33 +168,32 @@ namespace Navigator
         {
             if (pageList.Contains(page))
             {
-                if ((Role & page.Authority) > 0)
-                {
-                    bool? flag = PageBeforeChanged?.Invoke(pageHistory.ElementAtOrDefault(0), page);
-                    if (flag != null && flag == false)
-                    {
-                        return;
-                    }
-
-                    if (pageHistory.Count > 0)
-                    {
-                        if (pageHistory.First() == page)
-                        {
-                            return;
-                        }
-                        pageHistory.First().Pause();
-                    }
-                    SetPageParams(page, paramMap);
-                    pageHistory.Push(page);
-                    Flush();
-                }
-                else
+                if (EnableAuthority && (Role & page.Authority) == 0)
                 {
                     var eveArgs = new AuthorityMismatchedEventArgs();
                     eveArgs.MyAuthority = Role;
                     eveArgs.PageRequired = page.Authority;
                     AuthorityMismatched?.Invoke(null, eveArgs);
+                    return;
                 }
+
+                bool? flag = PageBeforeChanged?.Invoke(pageHistory.ElementAtOrDefault(0), page);
+                if (flag != null && flag == false)
+                {
+                    return;
+                }
+
+                if (pageHistory.Count > 0)
+                {
+                    if (pageHistory.First() == page)
+                    {
+                        return;
+                    }
+                    pageHistory.First().Pause();
+                }
+                SetPageParams(page, paramMap);
+                pageHistory.Push(page);
+                Flush();
             }
         }
 
@@ -290,7 +290,7 @@ namespace Navigator
                         {
                             newPage.Reset();
                         }
-                        
+
                         AddPage(newPage as Control);
                     }
                 }

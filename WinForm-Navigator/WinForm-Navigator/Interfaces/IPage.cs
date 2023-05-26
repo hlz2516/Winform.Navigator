@@ -1,4 +1,4 @@
-﻿namespace Navigator.Interfaces
+﻿namespace Navigators.Interfaces
 {
     public interface IPage
     {

@@ -31,7 +31,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.navigator1 = new Navigator.Navigator();
+            this.navigator1 = new Navigators.Navigator();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,8 +71,8 @@
             this.navigator1.TabIndex = 0;
             this.navigator1.Text = "navigator1";
             this.navigator1.Visible = false;
-            this.navigator1.PageChanged += new Navigator.Navigator.PageChangedEventHandler(this.navigator1_PageChanged);
-            this.navigator1.PageBeforeChanged += new Navigator.Navigator.PageChangedEventHandler(this.navigator1_PageBeforeChanged);
+            this.navigator1.PageChanged += new Navigators.Navigator.PageChangedEventHandler(this.navigator1_PageChanged);
+            this.navigator1.PageBeforeChanged += new Navigators.Navigator.PageChangedEventHandler(this.navigator1_PageBeforeChanged);
             // 
             // Form5
             // 
@@ -92,7 +92,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private Navigator.Navigator navigator1;
+        private Navigators.Navigator navigator1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
     }

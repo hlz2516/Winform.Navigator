@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.navigator1 = new Navigator.Navigator();
+            this.navigator1 = new Navigators.Navigator();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
@@ -93,7 +93,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private Navigator.Navigator navigator1;
+        private Navigators.Navigator navigator1;
     }
 }
 

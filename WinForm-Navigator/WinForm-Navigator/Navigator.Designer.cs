@@ -1,4 +1,4 @@
-﻿namespace Navigator
+﻿namespace Navigators
 {
     partial class Navigator
     {

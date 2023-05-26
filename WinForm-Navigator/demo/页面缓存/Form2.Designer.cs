@@ -34,7 +34,7 @@
             this.btn_page1 = new System.Windows.Forms.Button();
             this.btn_page2 = new System.Windows.Forms.Button();
             this.btn_page3 = new System.Windows.Forms.Button();
-            this.navigator1 = new Navigator.Navigator();
+            this.navigator1 = new Navigators.Navigator();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,6 +131,6 @@
         private System.Windows.Forms.Button btn_page1;
         private System.Windows.Forms.Button btn_page2;
         private System.Windows.Forms.Button btn_page3;
-        private Navigator.Navigator navigator1;
+        private Navigators.Navigator navigator1;
     }
 }

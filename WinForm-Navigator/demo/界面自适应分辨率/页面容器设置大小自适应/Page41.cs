@@ -1,6 +1,6 @@
 ﻿using AutoSizeTools;
-using Navigator;
-using Navigator.Interfaces;
+using Navigators;
+using Navigators.Interfaces;
 using System.Windows.Forms;
 
 namespace demo.界面自适应分辨率.页面容器设置大小自适应

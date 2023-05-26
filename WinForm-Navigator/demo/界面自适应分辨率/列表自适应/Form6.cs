@@ -1,12 +1,5 @@
 ﻿using AutoSizeTools;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace demo.界面自适应分辨率.列表自适应
@@ -42,7 +35,7 @@ namespace demo.界面自适应分辨率.列表自适应
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listView1.Columns[0].Width = 200;
+            //listView1.Columns[0].Width = 200;
         }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Navigator.Properties {
+namespace Navigators.Properties {
     using System;
     
     

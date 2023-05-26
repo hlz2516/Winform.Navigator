@@ -1,5 +1,5 @@
-﻿using Navigator;
-using Navigator.Interfaces;
+﻿using Navigators;
+using Navigators.Interfaces;
 using System.Windows.Forms;
 
 namespace demo.页面切换事件

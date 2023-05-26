@@ -1,5 +1,5 @@
-﻿using Navigator;
-using Navigator.Interfaces;
+﻿using Navigators;
+using Navigators.Interfaces;
 using System;
 using System.Windows.Forms;
 

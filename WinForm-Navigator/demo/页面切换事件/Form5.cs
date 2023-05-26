@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Navigators.Interfaces;
+using System;
 using System.Windows.Forms;
 
 namespace demo.页面切换事件
@@ -22,7 +23,7 @@ namespace demo.页面切换事件
             navigator1.NavigateTo<Page52>();
         }
 
-        private bool navigator1_PageBeforeChanged(Navigator.Interfaces.IPage oldPage, Navigator.Interfaces.IPage newPage)
+        private bool navigator1_PageBeforeChanged(IPage oldPage, IPage newPage)
         {
             string msg = $"oldpage:{oldPage?.Path} newpage:{newPage.Path}";
             var res = MessageBox.Show(msg + "==点击确定跳转，点击取消不做任何操作","info",MessageBoxButtons.OKCancel);
@@ -33,7 +34,7 @@ namespace demo.页面切换事件
             return false;
         }
 
-        private bool navigator1_PageChanged(Navigator.Interfaces.IPage oldPage, Navigator.Interfaces.IPage newPage)
+        private bool navigator1_PageChanged(IPage oldPage, IPage newPage)
         {
             string msg = $"oldpage:{oldPage?.Path} newpage:{newPage.Path}";
             MessageBox.Show(msg);
