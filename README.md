@@ -95,7 +95,7 @@ private void button2_Click(object sender, EventArgs e)
 }
 ```
 
-### Use Router£¨recommend£©
+### Use Routerï¼ˆrecommendï¼‰
 
 1. Find the **App. config** file in the project, open it, and add the routes item configuration. After the configuration is completed, it is shown as follows:
 ```xml
