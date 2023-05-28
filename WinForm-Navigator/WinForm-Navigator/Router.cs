@@ -1,7 +1,11 @@
 ﻿using Navigators.Attributes;
 using Navigators.Interfaces;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace Navigators
@@ -13,10 +17,14 @@ namespace Navigators
         public static event PageChangedEventHandler PageBeforeChanged;
         public static event EventHandler DefaultPageFirstShown;
         public static event EventHandler<AuthorityMismatchedEventArgs>? AuthorityMismatched;
-
+        /// <summary>
+        /// 存储所有页面实例的列表
+        /// </summary>
         private static List<IPage> pages;
+        /// <summary>
+        /// 页面名称与页面的映射字典
+        /// </summary>
         private static Dictionary<string, IPage> nameToPage;
-
         /// <summary>
         /// 页面容器
         /// </summary>
@@ -30,13 +38,13 @@ namespace Navigators
         /// </summary>
         private static Stack<IPage> popedPages;
         /// <summary>
-        /// 当前程序的使用者角色/身份拥有的权限
+        /// The permissions owned by the user role/identity of the current application
         /// </summary>
         public static Authority Role { get; set; }
         /// <summary>
-        /// 是否开启权限验证
+        /// Enable permission verification
         /// </summary>
-        public static bool EnableAuthority { get; set; } = false;
+        public static bool EnableAuthority { get; set; }
 
         static Router()
         {
@@ -44,15 +52,17 @@ namespace Navigators
             nameToPage = new Dictionary<string, IPage>();
             pageHistory = new Stack<IPage>();
             popedPages = new Stack<IPage>();
+            Role = Authority.VISITOR | Authority.USER;  //默认身份
         }
-
+        /// <summary>
+        /// Load configuration from App.config.
+        /// </summary>
         public static void LoadConfig()
         {
             XmlDocument doc = new XmlDocument();
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.IgnoreComments = true;
 
-            bool enableAuthority = false;
             List<Route> routes = new List<Route>();
 
             try
@@ -63,7 +73,7 @@ namespace Navigators
 
                 if (routesNode.Attributes["enableAuthority"] != null)
                 {
-                    enableAuthority = bool.Parse(routesNode.Attributes["enableAuthority"].Value.Trim());
+                    EnableAuthority = bool.Parse(routesNode.Attributes["enableAuthority"].Value.Trim());
                 }
 
                 XmlNodeList routeList = routesNode.SelectNodes("route");
@@ -82,10 +92,17 @@ namespace Navigators
                         route.Name = name.InnerText.Trim();
                     }
 
-                    var cache = routeNode.SelectSingleNode("cache");
-                    if (cache != null)
+                    if (routeNode.Attributes["cache"] != null)
                     {
-                        route.Cache = bool.Parse(cache.InnerText.Trim());
+                        route.Cached = bool.Parse(routeNode.Attributes["cache"].Value.Trim());
+                    }
+
+                    if (routeNode.Attributes["defaultPage"] != null)
+                    {
+                        if (!routes.Any(r=>r.IsDefault))
+                        {
+                            route.IsDefault = bool.Parse(routeNode.Attributes["defaultPage"].Value.Trim());
+                        }
                     }
 
                     routes.Add(route);
@@ -96,10 +113,18 @@ namespace Navigators
                 //遍历入口程序集所有声明为class的类型
                 foreach (var cls in classTypes)
                 {
+#if NET40
+                   bool isRoute = Attribute.GetCustomAttributes(cls).Any(c => c is RouteAttribute);
+#else
                     bool isRoute = cls.GetCustomAttributes().Any(c => c is RouteAttribute);
+#endif
                     if (isRoute)
                     {
+#if NET40
+                        RouteAttribute routeAttr = Attribute.GetCustomAttribute(cls,typeof(RouteAttribute)) as RouteAttribute;
+#else
                         RouteAttribute routeAttr = cls.GetCustomAttribute(typeof(RouteAttribute)) as RouteAttribute;
+#endif
                         foreach (var r in routes)
                         {
                             if (r.Path == routeAttr.RoutePath)
@@ -110,27 +135,32 @@ namespace Navigators
                                 {
                                     break;
                                 }
-                                pages.Add((IPage)page);
+                                IPage page1 = (IPage)page;
+                                page1.Path = r.Path;
+                                page1.Cached = r.Cached;
+                                pages.Add(page1);
+
+                                if (r.IsDefault)
+                                {
+                                    pageHistory.Clear();
+                                    pageHistory.Push(page1);
+                                }
+
                                 //判断xml表有没有设置该路由的name，如果有则存入nameToPage字典
                                 if (!string.IsNullOrEmpty(r.Name))
                                 {
-                                    nameToPage[r.Name] = (IPage)page;
+                                    nameToPage[r.Name] = page1;
                                 }
                                 //再判断该类属性上是否有设置该路由的name，如果有则存入或更新nameToPage字典
                                 if (!string.IsNullOrEmpty(routeAttr.RouteName))
                                 {
-                                    nameToPage[routeAttr.RouteName] = (IPage)page;
+                                    nameToPage[routeAttr.RouteName] = page1;
                                 }
                                 break;
                             }
                         }
                     }
                 }
-
-                //foreach (var item in pages)
-                //{
-                //    Console.WriteLine("page:" + item.Path);
-                //}
             }
             catch (Exception ex)
             {
@@ -139,19 +169,33 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 设置页面容器
+        /// Set Page Container
         /// </summary>
-        /// <param name="container">容器</param>
+        /// <param name="container"> The Container Control</param>
         public static void SetContainer(ScrollableControl container)
         {
+            if (_container != null)
+            {
+                _container.VisibleChanged -= ShowDefaultPage;
+            }
             _container = container;
+            _container.VisibleChanged += ShowDefaultPage;
+        }
+
+        private static void ShowDefaultPage(object? sender,EventArgs e)
+        {
+            if (pageHistory.Count == 1)
+            {
+                Flush();
+                DefaultPageFirstShown?.Invoke(sender, e);
+            }
         }
 
         /// <summary>
-        /// 导航至指定页面实例
+        /// Route to the specified page
         /// </summary>
-        /// <param name="page">页面实例</param>
-        /// <param name="paramMap">跳转时附带的页面参数</param>
+        /// <param name="path">the route path or name</param>
+        /// <param name="paramMap">Page parameters included during route</param>
         public static void RouteTo(string path, Dictionary<string, object>? paramMap = null)
         {
             //在pages中寻找符合的page，若没有，再去nameToPage中找
@@ -221,13 +265,13 @@ namespace Navigators
                 var propInfo = t.GetProperty(key, paramMap[key].GetType());
                 if (propInfo != null)
                 {
-                    propInfo.SetValue(page, paramMap[key]);
+                    propInfo.SetValue(page, paramMap[key],null);
                 }
             }
         }
 
         /// <summary>
-        /// 刷新页面
+        /// Refresh UI(only including the interior of the container).
         /// </summary>
         public static void Flush()
         {
@@ -299,10 +343,10 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 返回一个注册过的页面实例
+        /// Returns a page instance declared in the configuration
         /// </summary>
-        /// <typeparam name="T">页面类</typeparam>
-        /// <returns>页面实例，若不存在该页面则返回Null</returns>
+        /// <param name="path">the page(route) path or name</param>
+        /// <returns>page instance</returns>
         public static IPage GetPage(string path)
         {
             //在pages中寻找符合的page，若没有，再去nameToPage中找
@@ -318,9 +362,9 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 返回到上一个页面
+        /// Return to the previous page.
         /// </summary>
-        /// <returns>执行返回操作前的页面</returns>
+        /// <returns>The page before performing this operation(Old page)</returns>
         public static IPage Back()
         {
             if (pageHistory.Count > 1)
@@ -335,7 +379,7 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 撤销返回上一个页面
+        /// Cancel Return to Previous Page
         /// </summary>
         public static void GoBackBack()
         {
@@ -351,7 +395,9 @@ namespace Navigators
                 Flush();
             }
         }
-
+        /// <summary>
+        /// Clear the page display in the container, and then destroy all page instances.
+        /// </summary>
         public static void Destroy()
         {
             if (!_container.IsDisposed)
@@ -370,6 +416,7 @@ namespace Navigators
     {
         public string Name { get; set; }
         public string Path { get; set; }
-        public bool Cache { get; set; }
+        public bool Cached { get; set; }
+        public bool IsDefault { get; set; }
     }
 }

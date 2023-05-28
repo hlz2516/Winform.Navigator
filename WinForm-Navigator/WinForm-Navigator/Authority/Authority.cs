@@ -1,4 +1,6 @@
-﻿namespace Navigators
+﻿using System;
+
+namespace Navigators
 {
     [Flags]
     public enum Authority

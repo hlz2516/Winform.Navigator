@@ -1,16 +1,18 @@
 ﻿using Navigators;
+using Navigators.Attributes;
 using Navigators.Interfaces;
 using System.Windows.Forms;
 
-namespace demo
+namespace demo_router.some_page_events
 {
-    public partial class Page2 : Form,IPage
+    [Route("/events/page1")]
+    public partial class Page31 : Form,IPage
     {
         public string Path { get; set; }
         public bool Cached { get; set; }
-        public Authority Authority { get; set; } = Authority.VISITOR;
+        public Authority Authority { get; set; }
 
-        public Page2()
+        public Page31()
         {
             InitializeComponent();
         }

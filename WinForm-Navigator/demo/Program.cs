@@ -18,11 +18,12 @@ namespace demo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //第一步，如果想使用该包的鉴权机制，开启鉴权机制，设置程序使用者角色
-            //Navigator.EnableAuthority = true;  //该属性默认false
-            //Navigator.SetRole(Authority.VISITOR | Authority.USER);
+            //第一步，如果想使用该包的鉴权机制，开启鉴权机制，设置程序使用者角色。
+            //当使用者角色与页面要求的角色权限不匹配时，会触发权限不匹配事件
+            Navigator.EnableAuthority = true;  //该属性默认false
+            Navigator.SetRole(Authority.VISITOR | Authority.USER);  //你可以设置多重身份角色，比如这里就是游客+普通用户
 
-            Router.LoadConfig();
+            //Router.LoadConfig();
             Application.Run(new Form1());
         }
     }

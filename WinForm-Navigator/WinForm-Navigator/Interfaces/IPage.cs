@@ -2,25 +2,28 @@
 {
     public interface IPage
     {
+        /// <summary>
+        /// Route path
+        /// </summary>
         string Path { get; set; }
         /// <summary>
-        /// 是否缓存
+        /// Is cached
         /// </summary>
         bool Cached { get; set; }
         /// <summary>
-        /// 页面权限
+        /// Page permissions(Authority)
         /// </summary>
         Authority Authority { get; set; }
         /// <summary>
-        /// 页面跳转时如果当前页面作为被替换的页面，会调用该方法
+        /// This method will trigger when switching to another page
         /// </summary>
         void Pause();
         /// <summary>
-        /// 页面跳转时如果当前页面作为替换的页面并且设置了缓存，会调用该方法
+        /// This method will trigger when switching back to the page and setting the cache
         /// </summary>
         void Restore();
         /// <summary>
-        /// 页面跳转时如果当前页面作为替换的页面并且设置不缓存，会调用该方法
+        /// This method will trigger when switching back to the page and setting no caching
         /// </summary>
         void Reset();
     }

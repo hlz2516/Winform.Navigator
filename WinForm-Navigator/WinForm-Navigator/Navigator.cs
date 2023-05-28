@@ -1,5 +1,10 @@
 ﻿using Navigators.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Navigators
 {
@@ -27,11 +32,13 @@ namespace Navigators
         /// </summary>
         private Stack<IPage> popedPages;
         /// <summary>
-        /// 当前程序的使用者角色/身份拥有的权限
+        /// The permissions owned by the user role/identity of the current application
         /// </summary>
         public static Authority Role { get; set; }
-
-        public static bool EnableAuthority { get; set; } = false;
+        /// <summary>
+        /// Enable permission verification
+        /// </summary>
+        public static bool EnableAuthority { get; set; }
 
         public Navigator()
         {
@@ -60,20 +67,21 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 设置页面容器
+        /// Set page container.
         /// </summary>
-        /// <param name="container">容器</param>
+        /// <param name="container">the container control</param>
         public void SetContainer(ScrollableControl container)
         {
             this.container = container;
         }
 
         /// <summary>
-        /// 注册页面类。注册成功后该页面类的实例原则上交由页面管理器管理
+        /// Register page classes. After successful registration, the instance of this page 
+        /// should be managed by Navigator in principle.
         /// </summary>
-        /// <typeparam name="T">页面类</typeparam>
-        /// <param name="defaultPage">是否为初始页面</param>
-        /// <returns>注册成功返回true，否则返回false</returns>
+        /// <typeparam name="T">The class used as page.T must be a Control and inherited the IPage interface</typeparam>
+        /// <param name="defaultPage">is the default page(Does the page automatically display when the container is first displayed)</param>
+        /// <returns>Successfully registered returns true, otherwise returns false</returns>
         public bool RegisterPage<T>(bool defaultPage = false) where T : Control, new()
         {
             //pageType必须既是IPage接口类型又是Control类型，同时必须具有无参构造
@@ -100,10 +108,10 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 返回一个注册过的页面实例
+        /// Return the specified registered page instance
         /// </summary>
-        /// <typeparam name="T">页面类</typeparam>
-        /// <returns>页面实例，若不存在该页面则返回Null</returns>
+        /// <typeparam name="T">the page class type</typeparam>
+        /// <returns>Page instance, return null if the page does not exist</returns>
         public IPage GetPage<T>() where T : Control, new()
         {
             foreach (IPage page in pageList)
@@ -117,10 +125,10 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 导航至指定页面类的页面
+        /// Navigate to the page of the specified page class
         /// </summary>
-        /// <typeparam name="T">页面类</typeparam>
-        /// <param name="paramMap">跳转时附带的页面参数</param>
+        /// <typeparam name="T">the page class type</typeparam>
+        /// <param name="paramMap">Page parameters included during navigate</param>
         public void NavigateTo<T>(Dictionary<string, object>? paramMap = null) where T : Control, new()
         {
             foreach (var page in pageList)
@@ -160,10 +168,10 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 导航至指定页面实例
+        /// Navigate to the specified page instance
         /// </summary>
-        /// <param name="page">页面实例</param>
-        /// <param name="paramMap">跳转时附带的页面参数</param>
+        /// <param name="page">Page instance</param>
+        /// <param name="paramMap">Page parameters included during navigate</param>
         public void NavigateTo(IPage page, Dictionary<string, object>? paramMap = null)
         {
             if (pageList.Contains(page))
@@ -198,9 +206,9 @@ namespace Navigators
         }
 
         /// <summary>
-        /// 返回到上一个页面
+        /// Return to the previous page
         /// </summary>
-        /// <returns>执行返回操作前的页面</returns>
+        /// <returns>The page before performing this operation(Old page)</returns>
         public IPage Back()
         {
             if (pageHistory.Count > 1)
@@ -214,7 +222,7 @@ namespace Navigators
             return null;
         }
         /// <summary>
-        /// 撤销返回上一个页面
+        /// Cancel Return to Previous Page
         /// </summary>
         public void GoBackBack()
         {
@@ -255,13 +263,13 @@ namespace Navigators
                 var propInfo = t.GetProperty(key, paramMap[key].GetType());
                 if (propInfo != null)
                 {
-                    propInfo.SetValue(page, paramMap[key]);
+                    propInfo.SetValue(page, paramMap[key],null);
                 }
             }
         }
 
         /// <summary>
-        /// 刷新页面
+        /// Refresh UI(only including the interior of the container).
         /// </summary>
         public void Flush()
         {
@@ -355,11 +363,18 @@ namespace Navigators
         //    NavigateTo(page,paramsMap);
         //}
 
+        /// <summary>
+        /// Set role
+        /// </summary>
         public static void SetRole(Authority role)
         {
             Role = role;
         }
-
+        /// <summary>
+        /// Set permissions for the specified page
+        /// </summary>
+        /// <typeparam name="T">the page class type</typeparam>
+        /// <param name="authority">Page permissions</param>
         public void SetAuthority<T>(Authority authority) where T : Control, new()
         {
             foreach (var page in pageList)
@@ -371,7 +386,9 @@ namespace Navigators
                 }
             }
         }
-
+        /// <summary>
+        /// Clear the page display in the container, and then destroy all page instances.
+        /// </summary>
         public void Destroy()
         {
             if (!container.IsDisposed)

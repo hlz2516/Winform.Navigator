@@ -7,7 +7,7 @@
     <ProjectGuid>{891B2A88-8CD9-44D5-99EC-23C61BCA1564}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>demo</RootNamespace>
-    <AssemblyName>demo</AssemblyName>
+    <AssemblyName>demo-navigator</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoSizeHelper, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Winform.AutoSizeHelper.1.0.5\lib\net472\AutoSizeHelper.dll</HintPath>
+    <Reference Include="AutoSizeHelper, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Winform.AutoSizeHelper.1.0.7\lib\net472\AutoSizeHelper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
